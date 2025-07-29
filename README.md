@@ -9,8 +9,14 @@ that lets users organize tasks by categories, assign priorities, and manage them
 
 ## 🖼️ Preview
 
-![image alt][image_url]
-
+![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203255.png )]
+![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203303.png)]
+![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203323.png )]
+![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203336.png )]
+![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203349.png )]
+![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203408.png )]
+![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203418.png )]
+![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203418.png )]
 ---
 
 ## 🚀 Features
@@ -30,42 +36,15 @@ that lets users organize tasks by categories, assign priorities, and manage them
 
 ## 🧱 Project Structure
 mytasks/
-├── app/
-│   └── src/
-│       └── main/
-│           ├── java/com/neha/mytasks/
-│           │   ├── Screens/               # All Compose screens (UI)
-│           │   │   ├── AddTaskScreen.kt
-│           │   │   ├── CategoryScreen.kt
-│           │   │   ├── SplashScreen.kt
-│           │   │   ├── TaskDetailScreen.kt
-│           │   │   └── TaskListScreen.kt
-│           │   ├── data/                  # Room DB, DAOs, Repositories
-│           │   │   ├── CategoryDao.kt
-│           │   │   ├── CategoryRepository.kt
-│           │   │   ├── TaskDao.kt
-│           │   │   ├── TaskDatabase.kt
-│           │   │   └── TaskRepository.kt
-│           │   ├── model/                 # Data models
-│           │   │   ├── Category.kt
-│           │   │   ├── Task.kt
-│           │   │   └── TaskPriority.kt
-│           │   ├── navigation/            # Navigation graph
-│           │   │   └── AppNavGraph.kt
-│           │   ├── ui/theme/              # Material theme files
-│           │   │   ├── Color.kt
-│           │   │   ├── Theme.kt
-│           │   │   └── Type.kt
-│           │   ├── viewmodel/             # Business logic layer
-│           │   │   └── TaskViewModel.kt
-│           │   └── MainActivity.kt        # App entry point
-│           └── res/                       # Resources (layouts, values, etc.)
-│           └── AndroidManifest.xml
-├── build.gradle.kts                       # Project-level Gradle script
-├── settings.gradle.kts                    # Gradle settings
-├── gradle.properties
-├── gradlew / gradlew.bat                  # Gradle wrappers
-└── README.md
+├── data/             # Room DB, DAOs, Repositories
+├── model/            # Data models (Task, Category, Priority)
+├── Screens/          # UI Screens (Add, List, Detail, Category, Splash)
+├── navigation/       # Navigation graph
+├── viewmodel/        # TaskViewModel logic
+├── ui/theme/         # Compose theme setup
+├── MainActivity.kt   # App entry point
+└── AndroidManifest.xml
+
 
 
 ---
