@@ -14,12 +14,12 @@ that lets users organize tasks by categories, assign priorities, and manage them
 </p>
 
 <p align="center">
-  <img src="https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203323.png?raw=true" width="45%" />
+  <img src="https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203349.png?raw=true" width="45%" />
   <img src="https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203336.png?raw=true" width="45%" />
 </p>
 
 <p align="center">
-  <img src="https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203349.png?raw=true" width="45%" />
+  <img src="https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203323.png?raw=true" width="45%" />
   <img src="https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203408.png?raw=true" width="45%" />
 </p>
 
