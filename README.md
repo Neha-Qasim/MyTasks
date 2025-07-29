@@ -10,13 +10,21 @@ that lets users organize tasks by categories, assign priorities, and manage them
 ## 🖼️ Preview
 
 ![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203255.png )]
+
 ![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203303.png)]
+
 ![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203323.png )]
+
 ![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203336.png )]
+
 ![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203349.png )]
+
 ![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203408.png )]
+
 ![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203418.png )]
+
 ![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/756869587b34ed989704a1d008bbe37ac2292c32/Screenshot%202025-07-28%20203418.png )]
+
 ---
 
 ## 🚀 Features
