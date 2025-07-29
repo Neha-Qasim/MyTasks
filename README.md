@@ -70,4 +70,21 @@ that lets users organize tasks by categories, assign priorities, and manage them
 
 ---
 
+##🤝 Contributing
+Contributions, suggestions, and feedback are always welcome! If you'd like to improve or extend the project, feel free to fork it, create a new branch, and open a pull request.
+
+##🛠️ Future Improvements
+Add due dates and reminders
+
+Support for dark mode
+
+User authentication
+
+Export/import tasks
+
+##📬 Contact
+Created  by ##Neha Qasim
+For any queries, reach out via LinkedIn.
+
+
 
