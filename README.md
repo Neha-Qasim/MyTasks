@@ -43,7 +43,15 @@ that lets users organize tasks by categories, assign priorities, and manage them
 ---
 
 ## 🧱 Project Structure
-<pre lang="markdown"><code> ``` mytasks/ ├── data/ # Room DB, DAOs, Repositories ├── model/ # Data models (Task, Category, Priority) ├── Screens/ # UI Screens (Add, List, Detail, Category, Splash) ├── navigation/ # Navigation graph ├── viewmodel/ # TaskViewModel logic ├── ui/theme/ # Compose theme setup ├── MainActivity.kt # App entry point └── AndroidManifest.xml ``` </code></pre>
+<pre lang="markdown"><code> ``` mytasks/
+  ├── data/ # Room DB, DAOs, Repositories
+  ├── model/ # Data models (Task, Category, Priority)
+  ├── Screens/ # UI Screens (Add, List, Detail, Category, Splash)
+  ├── navigation/ # Navigation graph
+  ├── viewmodel/ # TaskViewModel logic 
+  ├── ui/theme/ # Compose theme setup
+  ├── MainActivity.kt # App entry point 
+  └── AndroidManifest.xml ``` </code></pre>
 
 
 
