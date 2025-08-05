@@ -51,19 +51,23 @@
 ![Login](https://github.com/Neha-Qasim/MyTasks/blob/6b5740ddb69da456b10cac872966ac84d6d4cf6a/Screenshot%202025-08-05%20221958.png)
 
 ### 🧾 Register Screen
-![Register](screenshots/register.png)
+![Register](https://github.com/Neha-Qasim/MyTasks/blob/1d5d9bd8eb5b3c4437c61d3ea631ddf21f621597/Screenshot%202025-08-05%20222025.png)
 
 ### 📂 Categories
-![Categories](screenshots/categories.png)
+![Categories](https://github.com/Neha-Qasim/MyTasks/blob/1d5d9bd8eb5b3c4437c61d3ea631ddf21f621597/Screenshot%202025-08-05%20222057.png)
 
 ### 📋 Task List
-![Task List](screenshots/task_list.png)
+![Task List](https://github.com/Neha-Qasim/MyTasks/blob/1d5d9bd8eb5b3c4437c61d3ea631ddf21f621597/Screenshot%202025-08-05%20222144.png)
 
 ### ➕ Add Task
-![Add Task](screenshots/add_task.png)
+![Add Task](https://github.com/Neha-Qasim/MyTasks/blob/1d5d9bd8eb5b3c4437c61d3ea631ddf21f621597/Screenshot%202025-08-05%20222217.png)
+
+### ✏️ Edit Task
+![Edit Task](https://github.com/Neha-Qasim/MyTasks/blob/1d5d9bd8eb5b3c4437c61d3ea631ddf21f621597/Screenshot%202025-08-05%20222205.png)
+
 
 ### 📄 Task Details
-![Task Detail](screenshots/task_detail.png)
+![Task Detail]((https://github.com/Neha-Qasim/MyTasks/blob/1d5d9bd8eb5b3c4437c61d3ea631ddf21f621597/Screenshot%202025-08-05%20222157.png)
 
 ---
 
