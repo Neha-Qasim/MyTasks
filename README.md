@@ -47,7 +47,7 @@
 
 ## 📸 Screenshots
 
-![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/5c0966cc10ccd32770678ff4c0bea1428ba21bda/Screenshot%202025-08-05%20221958.png)]
+![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/5c0966cc10ccd32770678ff4c0bea1428ba21bda/Screenshot%202025-08-05%20221958.png)]]
 
 ---
 
