@@ -1,43 +1,70 @@
 package com.neha.mytasks.Screens
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.neha.mytasks.auth.AuthViewModel
 import com.neha.mytasks.viewmodel.TaskViewModel
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
-
 @Composable
-fun CategoryScreen(navController: NavController, viewModel: TaskViewModel) {
+fun CategoryScreen(
+    navController: NavController,
+    viewModel: TaskViewModel,
+    authViewModel: AuthViewModel
+) {
     val categories by viewModel.categories.collectAsState()
+    val tasks by viewModel.tasks.collectAsState()
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+
     var showAddDialog by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
     var selectedCategory by remember { mutableStateOf("") }
     var newCategory by remember { mutableStateOf("") }
 
+    //  Force fresh data fetch when this screen loads
+    LaunchedEffect(Unit) {
+        viewModel.refreshData()
+    }
+
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Categories") })
+            TopAppBar(
+                title = { Text("Categories") },
+                actions = {
+                    IconButton(onClick = {
+                        authViewModel.signOut()
+                        navController.navigate("sign_in") {
+                            popUpTo("categories") { inclusive = true }
+                        }
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Logout,
+                            contentDescription = "Logout",
+                            tint = Color.Black
+                        )
+                    }
+                }
+            )
         },
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         floatingActionButton = {
-            FloatingActionButton(onClick = {
-                showAddDialog = true
-            }) {
+            FloatingActionButton(onClick = { showAddDialog = true }) {
                 Icon(Icons.Default.Add, contentDescription = "Add Category")
             }
         }
@@ -46,10 +73,12 @@ fun CategoryScreen(navController: NavController, viewModel: TaskViewModel) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
-                .padding(16.dp),
+                .padding(horizontal = 16.dp, vertical = 10.dp),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             items(categories) { category ->
+                val taskCount = tasks.count { it.category == category }
+
                 Card(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -64,32 +93,53 @@ fun CategoryScreen(navController: NavController, viewModel: TaskViewModel) {
                         ),
                     colors = CardDefaults.cardColors(containerColor = Color(0xFFBBDEFB))
                 ) {
-                    Text(
-                        text = category,
-                        modifier = Modifier.padding(16.dp),
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = category.replaceFirstChar { it.uppercase() },
+                            fontSize = 18.sp
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "$taskCount ${if (taskCount == 1) "task" else "tasks"}",
+                            fontSize = 14.sp,
+                            color = Color.DarkGray
+                        )
+                    }
                 }
             }
         }
 
-        // Dialog to Add Category
+        // ➕ Add Category Dialog
         if (showAddDialog) {
             AlertDialog(
-                onDismissRequest = { showAddDialog = false },
+                onDismissRequest = {
+                    showAddDialog = false
+                    newCategory = ""
+                },
                 title = { Text("Add Category") },
                 text = {
                     OutlinedTextField(
                         value = newCategory,
                         onValueChange = { newCategory = it },
-                        label = { Text("Category Name") }
+                        label = { Text("Category Name") },
+                        modifier = Modifier.fillMaxWidth()
                     )
                 },
                 confirmButton = {
                     TextButton(onClick = {
-                        if (newCategory.isNotBlank()) {
-                            viewModel.addCategory(newCategory.trim())
+                        val trimmed = newCategory.trim()
+                        if (trimmed.isNotBlank()) {
+                            val alreadyExists = categories.any { it.equals(trimmed, ignoreCase = true) }
+                            if (alreadyExists) {
+                                scope.launch {
+                                    snackbarHostState.showSnackbar("Category \"$trimmed\" already exists.")
+                                }
+                            } else {
+                                viewModel.addCategory(trimmed)
+                                scope.launch {
+                                    snackbarHostState.showSnackbar("Added \"$trimmed\".")
+                                }
+                            }
                             newCategory = ""
                             showAddDialog = false
                         }
@@ -108,15 +158,20 @@ fun CategoryScreen(navController: NavController, viewModel: TaskViewModel) {
             )
         }
 
-        // Dialog to Confirm Delete
+        // 🗑 Delete Category Dialog
         if (showDeleteDialog) {
             AlertDialog(
                 onDismissRequest = { showDeleteDialog = false },
                 title = { Text("Delete Category?") },
-                text = { Text("Are you sure you want to delete \"$selectedCategory\" and all its tasks?") },
+                text = {
+                    Text("Are you sure you want to delete \"$selectedCategory\" and all its tasks?")
+                },
                 confirmButton = {
                     TextButton(onClick = {
                         viewModel.deleteCategory(selectedCategory)
+                        scope.launch {
+                            snackbarHostState.showSnackbar("Deleted \"$selectedCategory\".")
+                        }
                         showDeleteDialog = false
                     }) {
                         Text("Delete", color = Color.Red)

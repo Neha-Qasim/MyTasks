@@ -1,4 +1,3 @@
-// --- TaskListScreen.kt (Fully Updated)
 package com.neha.mytasks.Screens
 
 import androidx.compose.foundation.clickable
@@ -9,7 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -25,7 +24,6 @@ fun TaskListScreen(
     tasks: List<Task>,
     onBackClick: () -> Unit,
     onTaskClick: (Task) -> Unit,
-    onCheckComplete: (Task, Boolean) -> Unit,
     onAddClick: () -> Unit
 ) {
     Scaffold(
@@ -34,19 +32,24 @@ fun TaskListScreen(
                 title = { Text("My Tasks") },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back"
+                        )
                     }
                 }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = onAddClick) {
-                Icon(Icons.Default.Add, contentDescription = "Add Task")
-                Spacer(modifier = Modifier.width(4.dp))
-                Text("Add Task")
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Add Task"
+                )
             }
         }
     ) { padding ->
+
         LazyColumn(
             modifier = Modifier
                 .padding(padding)
@@ -54,44 +57,41 @@ fun TaskListScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            items(tasks.sortedBy { it.priority }) { task ->
-                var checked by remember { mutableStateOf(task.isCompleted) }
+            val priorityOrder = mapOf("HIGH" to 1, "MEDIUM" to 2, "LOW" to 3)
+            val sortedTasks = tasks.sortedWith(compareBy { priorityOrder[it.priority.uppercase()] ?: 4 })
+
+            items(sortedTasks) { task ->
                 val bgColor = when (task.priority.uppercase()) {
-                    "HIGH" -> Color(0xFFA5D6A7)
-                    "MEDIUM" -> Color(0xFFFFFF8D)
-                    else -> Color(0xFFF8BBD0)
+                    "HIGH" -> Color(0xFFE57373)
+                    "MEDIUM" -> Color(0xFFFFF176)
+                    else -> Color(0xFF81D4FA)
                 }
+
                 Card(
                     colors = CardDefaults.cardColors(containerColor = bgColor),
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { onTaskClick(task) }
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(12.dp)
-                    ) {
-                        Checkbox(
-                            checked = checked,
-                            onCheckedChange = {
-                                checked = it
-                                onCheckComplete(task, it)
-                            }
+                    Column(modifier = Modifier.padding(16.dp)) {
+                        Text(
+                            text = task.title,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 18.sp,
+                            color = if (task.isCompleted) Color.Gray else Color.Black
                         )
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = task.title,
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 18.sp,
-                                color = if (checked) Color.Gray else Color.Black
-                            )
-                            Text(
-                                text = task.description,
-                                fontSize = 14.sp,
-                                color = Color.DarkGray
-                            )
-                        }
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = task.description,
+                            fontSize = 14.sp,
+                            color = Color.DarkGray
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Priority: ${task.priority}",
+                            fontSize = 12.sp,
+                            color = Color.DarkGray
+                        )
                     }
                 }
             }

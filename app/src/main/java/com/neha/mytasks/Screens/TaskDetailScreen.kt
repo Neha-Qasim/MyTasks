@@ -5,6 +5,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -28,6 +31,7 @@ fun TaskDetailScreen(
     var description by remember { mutableStateOf(task.description) }
     var priority by remember { mutableStateOf(task.priority) }
     var showDialog by remember { mutableStateOf(false) }
+    var priorityExpanded by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -68,8 +72,35 @@ fun TaskDetailScreen(
                             modifier = Modifier.fillMaxWidth()
                         )
                         Spacer(modifier = Modifier.height(8.dp))
-                        Text("Priority: $priority")
-                        // Optional: Add dropdown or radio for priority editing
+
+                        ExposedDropdownMenuBox(
+                            expanded = priorityExpanded,
+                            onExpandedChange = { priorityExpanded = !priorityExpanded }
+                        ) {
+                            OutlinedTextField(
+                                readOnly = true,
+                                value = priority,
+                                onValueChange = {},
+                                label = { Text("Priority") },
+                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = priorityExpanded) },
+                                modifier = Modifier.fillMaxWidth()
+                            )
+                            ExposedDropdownMenu(
+                                expanded = priorityExpanded,
+                                onDismissRequest = { priorityExpanded = false }
+                            ) {
+                                listOf("HIGH", "MEDIUM", "LOW").forEach { level ->
+                                    DropdownMenuItem(
+                                        text = { Text(level) },
+                                        onClick = {
+                                            priority = level
+                                            priorityExpanded = false
+                                        }
+                                    )
+                                }
+                            }
+                        }
+
                     } else {
                         Text(
                             text = title,
@@ -92,13 +123,25 @@ fun TaskDetailScreen(
                         Button(
                             onClick = {
                                 if (isEditing) {
-                                    onEdit(task.copy(title = title, description = description, priority = priority))
+                                    onEdit(
+                                        task.copy(
+                                            title = title,
+                                            description = description,
+                                            priority = priority,
+                                            key = task.key
+                                        )
+                                    )
                                     isEditing = false
                                 } else {
                                     isEditing = true
                                 }
                             }
                         ) {
+                            Icon(
+                                imageVector = if (isEditing) Icons.Default.Save else Icons.Default.Edit,
+                                contentDescription = null
+                            )
+                            Spacer(Modifier.width(6.dp))
                             Text(if (isEditing) "Save" else "Edit")
                         }
 
@@ -106,6 +149,8 @@ fun TaskDetailScreen(
                             onClick = { showDialog = true },
                             colors = ButtonDefaults.buttonColors(containerColor = Color.Red)
                         ) {
+                            Icon(Icons.Default.Delete, contentDescription = "Delete")
+                            Spacer(Modifier.width(6.dp))
                             Text("Delete", color = Color.White)
                         }
                     }
@@ -141,8 +186,8 @@ fun TaskDetailScreen(
 
 fun getPriorityColor(priority: String): Color {
     return when (priority.uppercase()) {
-        "HIGH" -> Color(0xFFA5D6A7)
+        "HIGH" -> Color(0xFFFFCDD2)
         "MEDIUM" -> Color(0xFFFFF59D)
-        else -> Color(0xFFF8BBD0)
+        else -> Color(0xFFB3E5FC)
     }
 }

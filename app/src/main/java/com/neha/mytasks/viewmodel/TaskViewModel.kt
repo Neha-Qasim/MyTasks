@@ -1,89 +1,127 @@
 package com.neha.mytasks.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import com.neha.mytasks.data.CategoryRepository
-import com.neha.mytasks.data.TaskRepository
-import com.neha.mytasks.model.Category
+import com.google.firebase.database.FirebaseDatabase
+import com.neha.mytasks.firebase.FirebaseUtils
 import com.neha.mytasks.model.Task
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
-class TaskViewModel(
-    private val taskRepo: TaskRepository,
-    private val categoryRepo: CategoryRepository
-) : ViewModel() {
+class TaskViewModel : ViewModel() {
+
+    private val db = FirebaseDatabase.getInstance().reference
 
     private val _tasks = MutableStateFlow<List<Task>>(emptyList())
     val tasks: StateFlow<List<Task>> = _tasks.asStateFlow()
 
-    // ✅ Get all categories as a list of strings
-    val categories: StateFlow<List<String>> = categoryRepo.getAllCategories().stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.WhileSubscribed(5000),
-        initialValue = emptyList()
-    )
+    private val _categories = MutableStateFlow<List<String>>(emptyList())
+    val categories: StateFlow<List<String>> = _categories.asStateFlow()
 
     init {
-        viewModelScope.launch {
-            taskRepo.getAllTasks().collect { _tasks.value = it }
-        }
+        refreshData()
     }
 
-    // ✅ Grouping for Category Screen (Optional Use)
-    fun tasksGroupedByCategory(): Map<String, List<Task>> =
-        _tasks.value.groupBy { it.category }
+    fun refreshData() {
+        fetchTasks()
+        fetchCategories()
+    }
 
-    // ✅ Get Tasks by category
-    fun getTasksForCategory(category: String): List<Task> =
-        _tasks.value.filter { it.category == category }.sortedBy {
-            when (it.priority.uppercase()) {
-                "HIGH" -> 1
-                "MEDIUM" -> 2
-                else -> 3
+    private fun fetchTasks() {
+        val uid = FirebaseUtils.getCurrentUserId() ?: return
+        db.child("users").child(uid).child("tasks").get()
+            .addOnSuccessListener { snapshot ->
+                val taskList = snapshot.children.mapNotNull { child ->
+                    val task = child.getValue(Task::class.java)
+                    task?.copy(key = child.key ?: "")
+                }
+                _tasks.value = taskList
             }
-        }
+    }
 
-    // ✅ Fixed addTask function
+    private fun fetchCategories() {
+        val uid = FirebaseUtils.getCurrentUserId() ?: return
+        db.child("users").child(uid).child("categories").get()
+            .addOnSuccessListener { snapshot ->
+                val categoryList = snapshot.children.mapNotNull { it.getValue(String::class.java) }
+                _categories.value = categoryList
+            }
+    }
+
+    fun getTasksForCategory(category: String): List<Task> =
+        _tasks.value.filter { it.category == category }
+
+    fun getTaskByKey(key: String): Task? =
+        _tasks.value.find { it.key == key }
+
     fun addTask(category: String, title: String, description: String, priority: String) {
+        val uid = FirebaseUtils.getCurrentUserId() ?: return
+        val newRef = db.child("users").child(uid).child("tasks").push()
         val task = Task(
+            key = newRef.key ?: "",
             title = title,
             description = description,
+            category = category,
             priority = priority.uppercase(),
-            category = category
+            isCompleted = false
         )
-        viewModelScope.launch {
-            taskRepo.insertTask(task)
+        newRef.setValue(task).addOnSuccessListener { fetchTasks() }
+    }
+
+    fun updateTask(task: Task) {
+        val uid = FirebaseUtils.getCurrentUserId() ?: return
+
+        //  Optimistically update UI
+        _tasks.value = _tasks.value.map {
+            if (it.key == task.key) task else it
         }
+
+        // Sync with Firebase (no need to re-fetch)
+        db.child("users").child(uid).child("tasks").child(task.key).setValue(task)
+    }
+    fun deleteTask(task: Task) {
+        val uid = FirebaseUtils.getCurrentUserId() ?: return
+        db.child("users").child(uid).child("tasks").child(task.key).removeValue()
+            .addOnSuccessListener { fetchTasks() }
     }
 
-    fun updateTask(task: Task) = viewModelScope.launch { taskRepo.updateTask(task) }
+    fun markTaskCompleted(task: Task, completed: Boolean) {
+        val uid = FirebaseUtils.getCurrentUserId() ?: return
+        val updatedTask = task.copy(isCompleted = completed)
 
-    fun deleteTask(task: Task) = viewModelScope.launch { taskRepo.deleteTask(task) }
+        //  Optimistically update local list (instant UI update)
+        _tasks.value = _tasks.value.map {
+            if (it.key == task.key) updatedTask else it
+        }
 
-    fun getTaskById(id: Int): Task? = _tasks.value.find { it.id == id }
-
-    fun markTaskCompleted(task: Task, completed: Boolean) = viewModelScope.launch {
-        taskRepo.updateTask(task.copy(isCompleted = completed))
-    }
-
-    fun addCategory(name: String) = viewModelScope.launch {
-        categoryRepo.insertCategory(Category(name = name))
-    }
-    fun deleteCategory(category: String) = viewModelScope.launch {
-        categoryRepo.deleteCategoryByName(category)
-        taskRepo.deleteTasksByCategory(category)
+        // Persist to Firebase
+        db.child("users").child(uid).child("tasks").child(task.key).setValue(updatedTask)
     }
 
 
-}
 
-class TaskViewModelFactory(
-    private val taskRepo: TaskRepository,
-    private val categoryRepo: CategoryRepository
-) : ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return TaskViewModel(taskRepo, categoryRepo) as T
+    fun addCategory(name: String) {
+        val trimmed = name.trim()
+        if (trimmed.isBlank()) return
+        val uid = FirebaseUtils.getCurrentUserId() ?: return
+        db.child("users").child(uid).child("categories").child(trimmed).setValue(trimmed)
+            .addOnSuccessListener { fetchCategories() }
+    }
+
+    fun deleteCategory(category: String) {
+        val uid = FirebaseUtils.getCurrentUserId() ?: return
+        db.child("users").child(uid).child("categories").child(category).removeValue()
+            .addOnSuccessListener { fetchCategories() }
+
+        db.child("users").child(uid).child("tasks").get()
+            .addOnSuccessListener { snapshot ->
+                snapshot.children.forEach { taskSnap ->
+                    val task = taskSnap.getValue(Task::class.java)
+                    if (task?.category == category) {
+                        db.child("users").child(uid).child("tasks").child(taskSnap.key!!).removeValue()
+                    }
+                }
+                fetchTasks()
+            }
     }
 }

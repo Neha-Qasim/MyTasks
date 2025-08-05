@@ -1,4 +1,4 @@
-// --- ui/SplashScreen.kt
+// File: Screens/SplashScreen.kt
 package com.neha.mytasks.Screens
 
 import android.os.Handler
@@ -40,7 +40,7 @@ fun SplashScreen(navController: NavController) {
     }
 
     Handler(Looper.getMainLooper()).postDelayed({
-        navController.navigate("categories") {
+        navController.navigate("auth_gate") {
             popUpTo("splash") { inclusive = true }
         }
     }, 3000)

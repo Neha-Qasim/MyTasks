@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1087748782763",
+    "project_id": "login-register-firebase-1056f",
+    "storage_bucket": "login-register-firebase-1056f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1087748782763:android:0cf35716a88a93219e15ee",
+        "android_client_info": {
+          "package_name": "com.neha.mytasks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1087748782763-c05r1flaokapq4kakbck6tcjd4rd8fdq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.neha.mytasks",
+            "certificate_hash": "056216ce217370aa42707cf679628081e832e993"
+          }
+        },
+        {
+          "client_id": "1087748782763-uj67nfrmek69v4e38392f7672eb8pq8s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAisdTiRMr3x638q2JfDtz3R138dQNKiE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1087748782763-uj67nfrmek69v4e38392f7672eb8pq8s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
