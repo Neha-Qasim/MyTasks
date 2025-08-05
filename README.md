@@ -47,7 +47,23 @@
 
 ## 📸 Screenshots
 
-![image alt][(https://github.com/Neha-Qasim/MyTasks/blob/5c0966cc10ccd32770678ff4c0bea1428ba21bda/Screenshot%202025-08-05%20221958.png)]]
+### 🔐 Login Screen
+![Login](https://github.com/Neha-Qasim/MyTasks/blob/6b5740ddb69da456b10cac872966ac84d6d4cf6a/Screenshot%202025-08-05%20221958.png)
+
+### 🧾 Register Screen
+![Register](screenshots/register.png)
+
+### 📂 Categories
+![Categories](screenshots/categories.png)
+
+### 📋 Task List
+![Task List](screenshots/task_list.png)
+
+### ➕ Add Task
+![Add Task](screenshots/add_task.png)
+
+### 📄 Task Details
+![Task Detail](screenshots/task_detail.png)
 
 ---
 
