@@ -67,7 +67,7 @@
 
 
 ### 📄 Task Details
-![Task Detail]((https://github.com/Neha-Qasim/MyTasks/blob/1d5d9bd8eb5b3c4437c61d3ea631ddf21f621597/Screenshot%202025-08-05%20222157.png)
+![Task Detail](https://github.com/Neha-Qasim/MyTasks/blob/1d5d9bd8eb5b3c4437c61d3ea631ddf21f621597/Screenshot%202025-08-05%20222157.png)
 
 ---
 
